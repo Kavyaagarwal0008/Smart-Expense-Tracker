@@ -24,6 +24,14 @@ window.onload = () => {
         ) || [];
 
     renderExpenses(expenses);
+
+
+    document.getElementById(
+            "budgetAmount"
+        ).textContent =
+        budget.toLocaleString("en-IN");
+
+    updateBudget();
 };
 
 // Add Expense
@@ -401,5 +409,214 @@ function updateDashboard() {
         getMonthlyTotal()
         .toLocaleString("en-IN");
 
+    // NEW
+    document.getElementById("incomeTotal")
+        .textContent =
+        income.toLocaleString("en-IN");
+
+    document.getElementById("savings")
+        .textContent =
+        (income - overallTotal)
+        .toLocaleString("en-IN");
+
+    renderAnalytics();
+    updateBudget();
     renderRecent();
+}
+
+
+function renderAnalytics() {
+
+    const analytics =
+        document.getElementById(
+            "analytics"
+        );
+
+    analytics.innerHTML = "";
+
+    const categoryTotals =
+        expenses.reduce((acc, expense) => {
+
+            acc[expense.category] =
+                (acc[expense.category] || 0) +
+                expense.amount;
+
+            return acc;
+
+        }, {});
+
+    for (let category in categoryTotals) {
+
+        analytics.innerHTML += `
+        <div class="analytics-item">
+
+            ${category}
+
+            <span>
+                ₹${categoryTotals[
+                    category
+                ]}
+            </span>
+
+        </div>
+        `;
+    }
+}
+
+
+
+document
+    .getElementById("sortDate")
+    .addEventListener("click", () => {
+
+        expenses.sort((a, b) =>
+            new Date(b.date) -
+            new Date(a.date)
+        );
+
+        renderExpenses(expenses);
+    });
+
+
+document
+    .getElementById("sortAmount")
+    .addEventListener("click", () => {
+
+        expenses.sort((a, b) =>
+            b.amount - a.amount
+        );
+
+        renderExpenses(expenses);
+    });
+
+document
+    .getElementById("sortCategory")
+    .addEventListener("click", () => {
+
+        expenses.sort((a, b) =>
+            a.category
+            .localeCompare(
+                b.category
+            )
+        );
+
+        renderExpenses(expenses);
+    });
+
+
+// Set income
+let income = Number(
+    localStorage.getItem(
+        "income"
+    )
+) || 0;
+
+
+document
+    .getElementById(
+        "addIncomeBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            const value =
+                Number(
+                    document
+                    .getElementById(
+                        "incomeInput"
+                    ).value
+                );
+
+            income += value;
+
+            localStorage.setItem(
+                "income",
+                income
+            );
+
+            updateDashboard();
+        }
+    );
+
+// Set Budget
+let budget =
+    Number(
+        localStorage.getItem("budget")
+    ) || 0;
+
+
+const budgetInput =
+    document.getElementById("budgetInput");
+
+const setBudgetBtn =
+    document.getElementById("setBudgetBtn");
+
+setBudgetBtn.addEventListener(
+    "click",
+    () => {
+
+        budget =
+            Number(
+                budgetInput.value
+            );
+
+        localStorage.setItem(
+            "budget",
+            budget
+        );
+
+        document.getElementById(
+                "budgetAmount"
+            ).textContent =
+            budget.toLocaleString("en-IN");
+
+        updateBudget();
+
+        budgetInput.value = "";
+    }
+);
+
+
+function updateBudget() {
+
+    const totalExpense =
+        expenses.reduce(
+            (sum, expense) =>
+            sum + expense.amount,
+            0
+        );
+
+    const progress =
+        budget > 0 ?
+        (totalExpense / budget) * 100 :
+        0;
+
+    document.getElementById(
+            "budgetProgress"
+        ).style.width =
+        Math.min(progress, 100) + "%";
+
+    const status =
+        document.getElementById(
+            "budgetStatus"
+        );
+
+    if (totalExpense > budget &&
+        budget > 0) {
+
+        status.textContent =
+            "⚠ Budget Exceeded";
+
+        status.style.color =
+            "#ef4444";
+
+    } else {
+
+        status.textContent =
+            `${Math.round(progress)}% Used`;
+
+        status.style.color =
+            "#22c55e";
+    }
 }
