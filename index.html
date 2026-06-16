@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Expense Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Welcome -->
+        <section class="welcome-card">
+
+            <div class="welcome-content">
+                <h2>👋 Welcome Back</h2>
+                <p>
+                    Track your expenses and stay on budget.
+                </p>
+            </div>
+
+            <div class="welcome-icon">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+
+        </section>
+
+        <!-- Header -->
+        <header class="header">
+            <h1>
+                <i class="fa-solid fa-wallet"></i> Smart Expense Tracker
+            </h1>
+
+            <p>Track, Manage & Analyze Your Daily Expenses</p>
+        </header>
+
+        <!-- Dashboard -->
+        <section class="dashboard">
+
+            <div class="card">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                <h3>Total Spending</h3>
+                <h2>₹<span id="total">0</span></h2>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-receipt"></i>
+                <h3>Total Expenses</h3>
+                <h2 id="expenseCount">0</h2>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-chart-pie"></i>
+                <h3>Categories</h3>
+                <h2 id="categoryCount">0</h2>
+            </div>
+
+        </section>
+
+        <!-- Add Expense -->
+        <section class="expense-section">
+
+            <h2>Add New Expense</h2>
+
+            <div class="expense-form">
+
+                <input type="text" id="title" placeholder="Expense Title">
+
+                <input type="number" id="amount" placeholder="Amount">
+
+                <input type="date" id="date">
+
+                <select id="category">
+                    <option>Food</option>
+                    <option>Travel</option>
+                    <option>Shopping</option>
+                    <option>Bills</option>
+                    <option>Other</option>
+                </select>
+
+                <button id="addBtn">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Expense
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- Search & Filter -->
+        <section class="controls">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text" id="search" placeholder="Search Expenses">
+
+            </div>
+
+            <select id="filter">
+                <option value="All">All Categories</option>
+                <option value="Food">Food</option>
+                <option value="Travel">Travel</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Bills">Bills</option>
+                <option value="Other">Other</option>
+            </select>
+
+        </section>
+
+        <!-- Expense History -->
+        <section class="history">
+
+            <div class="history-header">
+                <h2>
+                    <i class="fa-solid fa-clock-rotate-left"></i> Expense History
+                </h2>
+            </div>
+
+            <div id="expenseList"></div>
+
+        </section>
+
+        <!-- Monthly Summary -->
+        <section class="summary">
+
+            <h2>
+                <i class="fa-solid fa-chart-line"></i> Monthly Summary
+            </h2>
+
+            <p>
+                Total Monthly Spending:
+                <strong>
+                    ₹<span id="monthlyTotal">0</span>
+                </strong>
+            </p>
+
+        </section>
+
+        <footer>
+            <p>
+                © 2026 Smart Expense Tracker | Built with HTML, CSS & JavaScript
+            </p>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
