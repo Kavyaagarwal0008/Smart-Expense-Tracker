@@ -320,3 +320,97 @@ footer {
     font-size: 4rem;
     opacity: 0.3;
 }
+
+
+/* Theme Button */
+
+#themeToggle {
+    border: none;
+    background: #22c55e;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+
+/* Toast */
+
+#toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #22c55e;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    opacity: 0;
+    transition: .4s;
+    z-index: 9999;
+}
+
+
+/* Light Mode */
+
+.light-mode {
+    background: #f4f7fb;
+    color: #111827;
+}
+
+.light-mode .card,
+.light-mode .history,
+.light-mode .expense-section,
+.light-mode .recent-card {
+    background: white;
+    color: #111827;
+}
+
+
+/* Recent Transactions */
+
+.recent-card {
+    background: white;
+    color: black;
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.recent-card h2 {
+    margin-bottom: 15px;
+}
+
+.recent-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+/* Edit Button */
+
+.edit-btn {
+    background: #3b82f6 !important;
+}
+
+.edit-btn:hover {
+    background: #2563eb !important;
+}
+
+
+/* Empty State */
+
+.empty {
+    text-align: center;
+    padding: 25px;
+    font-size: 18px;
+    color: #64748b;
+}
+
+.edit-btn {
+    background: #3b82f6 !important;
+}
+
+.edit-btn:hover {
+    background: #2563eb !important;
+}

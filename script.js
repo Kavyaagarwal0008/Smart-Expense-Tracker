@@ -1,3 +1,4 @@
+let editId = null;
 let expenses = [];
 
 // Inputs
@@ -47,7 +48,21 @@ function addExpense() {
         date: date.value
     };
 
-    expenses.push(expense);
+    if (editId) {
+
+        expenses = expenses.map(exp =>
+            exp.id === editId ? expense : exp
+        );
+
+        editId = null;
+
+        showToast("Expense Updated");
+    } else {
+
+        expenses.push(expense);
+
+        showToast("Expense Added");
+    }
 
     saveToLocalStorage();
 
@@ -71,7 +86,7 @@ function renderExpenses(data) {
             </div>
         `;
 
-        updateDashboard(0);
+        updateDashboard();
 
         return;
     }
@@ -81,48 +96,183 @@ function renderExpenses(data) {
     data.forEach(expense => {
 
         totalAmount += expense.amount;
+        let color;
 
+        switch (expense.category) {
+
+            case "Food":
+                color = "#22c55e";
+                break;
+
+            case "Travel":
+                color = "#3b82f6";
+                break;
+
+            case "Shopping":
+                color = "#a855f7";
+                break;
+
+            case "Medical":
+                color = "#ef4444";
+                break;
+
+            default:
+                color = "#64748b";
+        }
         const div = document.createElement("div");
 
         div.classList.add("expense-item");
 
+        //         div.innerHTML = `
+        //             <span>
+        //     <strong>${expense.title}</strong>
+        //     <br>
+        //     ${expense.category}
+        //     <br>
+        //     ${new Date(expense.date).toLocaleDateString("en-IN")}
+        // </span>
+
+        //             <span>
+        //                 ₹${expense.amount.toLocaleString("en-IN")}
+
+        //                 <button class="edit-btn" onclick="editExpense(${expense.id})">
+        //                     Edit
+        //                 </button>
+
+        //                 <button onclick="deleteExpense(${expense.id})">
+        //                     Delete
+        //                 </button>
+        //             </span>
+        //         `;
+
+
+
         div.innerHTML = `
-            <span>
-                <strong>${expense.title}</strong>
-                <br>
-                ${expense.category}
-                <br>
-                ${expense.date}
-            </span>
+<div class="expense-info">
 
-            <span>
-                ₹${expense.amount.toLocaleString("en-IN")}
+    <div class="expense-title">
+        ${expense.title}
+    </div>
 
-                <button
-                    onclick="deleteExpense(${expense.id})">
-                    Delete
-                </button>
-            </span>
-        `;
+    <div class="expense-category">
+        ${expense.category}
+    </div>
+
+    <div class="expense-date">
+        ${new Date(expense.date)
+            .toLocaleDateString("en-IN")}
+    </div>
+
+</div>
+
+<div class="expense-actions">
+
+    <div class="expense-amount">
+        ₹${expense.amount.toLocaleString("en-IN")}
+    </div>
+
+    <div class="expense-buttons">
+
+        <button
+            class="edit-btn"
+            onclick="editExpense(${expense.id})">
+            Edit
+        </button>
+
+        <button
+            class="delete-btn"
+            onclick="deleteExpense(${expense.id})">
+            Delete
+        </button>
+
+    </div>
+
+</div>
+`;
+        div.style.borderLeft =
+            `6px solid ${color}`;
 
         expenseList.appendChild(div);
     });
 
-    updateDashboard(totalAmount);
+    updateDashboard();
 }
 
+
+
+// Recent Transactions
+
+
+function renderRecent() {
+
+    const recent = [...expenses]
+        .reverse()
+        .slice(0, 5);
+
+    const recentList =
+        document.getElementById(
+            "recentList"
+        );
+
+    recentList.innerHTML = "";
+
+    recent.forEach(expense => {
+
+        recentList.innerHTML += `
+            <div class="recent-item">
+
+                ${expense.title}
+                -
+                ₹${expense.amount}
+
+            </div>
+        `;
+    });
+}
+
+
+
+function editExpense(id) {
+
+    const expense =
+        expenses.find(exp => exp.id === id);
+
+    title.value = expense.title;
+    amount.value = expense.amount;
+    category.value = expense.category;
+    date.value = expense.date;
+
+    editId = id;
+}
+
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.style.opacity = "1";
+
+    setTimeout(() => {
+        toast.style.opacity = "0";
+    }, 2000);
+}
 // Delete Expense
 function deleteExpense(id) {
 
-    expenses = expenses.filter(
-        expense => expense.id !== id
-    );
+    expenses =
+        expenses.filter(exp =>
+            exp.id !== id
+        );
 
     saveToLocalStorage();
 
     applyFilters();
-}
 
+    showToast("Expense Deleted");
+}
 // Save
 function saveToLocalStorage() {
 
@@ -165,6 +315,32 @@ function applyFilters() {
     renderExpenses(filtered);
 }
 
+const themeBtn =
+    document.getElementById("themeToggle");
+
+themeBtn.addEventListener("click", () => {
+
+    document.body.classList.toggle(
+        "light-mode"
+    );
+
+    localStorage.setItem(
+        "theme",
+        document.body.classList.contains(
+            "light-mode"
+        )
+    );
+});
+
+const savedTheme =
+    localStorage.getItem("theme");
+
+if (savedTheme === "true") {
+    document.body.classList.add(
+        "light-mode"
+    );
+}
+
 // Monthly Total
 function getMonthlyTotal() {
 
@@ -193,10 +369,17 @@ function getMonthlyTotal() {
 }
 
 // Dashboard
-function updateDashboard(totalAmount) {
+function updateDashboard() {
+
+    const overallTotal =
+        expenses.reduce(
+            (sum, expense) =>
+            sum + expense.amount,
+            0
+        );
 
     total.textContent =
-        totalAmount.toLocaleString("en-IN");
+        overallTotal.toLocaleString("en-IN");
 
     document.getElementById(
             "expenseCount"
@@ -217,4 +400,6 @@ function updateDashboard(totalAmount) {
         ).textContent =
         getMonthlyTotal()
         .toLocaleString("en-IN");
+
+    renderRecent();
 }

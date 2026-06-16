@@ -29,4 +29,4 @@ A responsive expense tracking web application built using HTML, CSS, and JavaScr
 
 ## Author
 
-Kavya Agarwal
+Kavya Agarwal || B. Tech CSE-AIML || GL Bajaj Institute of Technology and Management

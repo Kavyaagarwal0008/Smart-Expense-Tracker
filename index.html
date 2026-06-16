@@ -13,6 +13,8 @@
 
 <body>
 
+    <div id="toast"></div>
+
     <div class="container">
 
         <!-- Welcome -->
@@ -24,20 +26,25 @@
                     Track your expenses and stay on budget.
                 </p>
             </div>
-
-            <div class="welcome-icon">
-                <i class="fa-solid fa-wallet"></i>
-            </div>
-
         </section>
 
         <!-- Header -->
         <header class="header">
-            <h1>
-                <i class="fa-solid fa-wallet"></i> Smart Expense Tracker
-            </h1>
 
-            <p>Track, Manage & Analyze Your Daily Expenses</p>
+            <div>
+                <h1>
+                    <i class="fa-solid fa-wallet"></i> Smart Expense Tracker
+                </h1>
+
+                <p>
+                    Track, Manage & Analyze Your Daily Expenses
+                </p>
+            </div>
+
+            <button id="themeToggle">
+        🌙
+    </button>
+
         </header>
 
         <!-- Dashboard -->
@@ -63,6 +70,16 @@
 
         </section>
 
+        <section class="recent-card">
+
+            <h2>
+                <i class="fa-solid fa-clock"></i> Recent Transactions
+            </h2>
+
+            <div id="recentList"></div>
+
+        </section>
+
         <!-- Add Expense -->
         <section class="expense-section">
 
@@ -80,7 +97,7 @@
                     <option>Food</option>
                     <option>Travel</option>
                     <option>Shopping</option>
-                    <option>Bills</option>
+                    <option>Medical</option>
                     <option>Other</option>
                 </select>
 
@@ -109,7 +126,7 @@
                 <option value="Food">Food</option>
                 <option value="Travel">Travel</option>
                 <option value="Shopping">Shopping</option>
-                <option value="Bills">Bills</option>
+                <option value="Bills">Medical</option>
                 <option value="Other">Other</option>
             </select>
 
